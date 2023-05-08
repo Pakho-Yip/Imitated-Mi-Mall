@@ -84,37 +84,44 @@
 			
 			<swiper :duration="150" :current="tabIndex" :style="'height:'+scrollH+'px;'" @change="onChangeTab">
 				<swiper-item v-for="(item,index) in newsitems" :key="index">
-					<scroll-view scroll-y="true" :style="'height:'+scrollH+'px;'">
+					<scroll-view scroll-y="true" :style="'height:'+scrollH+'px;'"
+					@scrolltolower="loadmore(index)">
 						<!-- <view v-for="i in 100" :key="i">{{i}}</view> -->
 						
 						<block v-for="(list,listIndex) in item.list" :key="listIndex">
-									<!-- 轮播图组件 -->
-									<swiper-image v-if="list.type === 'swiper'" :resdata="list.data" />
-									
-									<!--首页分类 -->
-									<template v-else-if="list.type === 'indexnavs'">
-										<indexNav :resdata="list.data" />
-										<divider />
-									</template>
-									
-									
-									<!-- 三图广告 -->
-									<template v-else-if="list.type === 'threeAdv'">
-										<threeAdv :resdata="list.data" />
-										<divider />
-									</template>
-									
-									
-									<!-- 大图广告位 -->
-									<!-- <card headTitle="每日精选" bodyCover="/static/images/demo/demo4.jpg" /> -->
-						
-									<!-- 公共列表组件 750-5=745 372.5 -->
-									<view class="row j-sb" v-else-if="list.type === 'commonList'">
-										<block v-for="(item2,index2) in list.data" :key="index2">
-											<common-list :item="item2" :index="index2"></common-list>
-										</block>
-									</view>
+							<!-- 轮播图组件 -->
+							<swiper-image v-if="list.type === 'swiper'" :resdata="list.data" />
+							
+							<!--首页分类 -->
+							<template v-else-if="list.type === 'indexnavs'">
+								<indexNav :resdata="list.data" />
+								<divider />
+							</template>
+							
+							
+							<!-- 三图广告 -->
+							<template v-else-if="list.type === 'threeAdv'">
+								<threeAdv :resdata="list.data" />
+								<divider />
+							</template>
+							
+							
+							<!-- 大图广告位 -->
+							<!-- <card headTitle="每日精选" bodyCover="/static/images/demo/demo4.jpg" /> -->
+				
+							<!-- 公共列表组件 750-5=745 372.5 -->
+							<view class="row j-sb" v-else-if="list.type === 'commonList'">
+								<block v-for="(item2,index2) in list.data" :key="index2">
+									<common-list :item="item2" :index="index2"></common-list>
+								</block>
+							</view>
 						</block>
+						
+						<!-- 上拉加载更多 -->
+						<divider />
+						<view class="d-flex a-center j-center text-light-muted font-md py-3">
+							{{item.loadtext}}
+						</view>
 					</scroll-view>
 				</swiper-item>
 			</swiper>
@@ -372,8 +379,15 @@
 				let arr = [];
 				for (var i = 0;i < this.tabBars.length; i++) {
 					let obj = {
-						list:[]
+						list:[],
+						// 1.上拉加载更多 2.加载中... 3.没有更多了
+						loadtext:"上拉加载更多"
 					}
+					// 获取首屏数据
+					if (i === 0) {
+						obj.list = demo1;
+					}
+					
 					arr.push(obj)
 				}
 				this.newsitems = arr;
@@ -385,10 +399,32 @@
 				}
 				this.tabIndex = index;
 				this.scrollinto = 'tab'+index;
+				this.addData();
 			},
 			// 监听滑动列表
 			onChangeTab(e){
 				this.changeTab(e.detail.current);
+			},
+			// 加载数据
+			addData(){
+				// 拿到当前索引
+				let index = this.tabIndex;
+				// 请求数据库
+				this.newsitems[index].list = demo2;
+			},
+			// 上拉加载更多
+			loadmore(index){
+				let item = this.newsitems[index];
+				// 判断是否处于可加载状态
+				if (item.loadtext !== '上拉加载更多') return;
+				// 模拟加载
+				item.loadtext = '加载中...';
+				setTimeout(()=>{
+					// 加载数据
+					item.list=[ ...item.list, ...demo2];
+					// 恢复状态
+					item.loadtext = '上拉加载更多';
+				},2000)
 			}
 		}
 	}

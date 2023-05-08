@@ -1,0 +1,74 @@
+<template>
+	<div>
+		<list>
+			<refresh style="height: 80px;"
+			@refresh="refresh" @pullingdown="pullingdown" :display="show">
+				<text>{{refreshtext}}</text>
+			</refresh>
+			<cell>
+				<div style="height: 300px;border-width: 2px;border-style: solid;border-color: #333333;
+				background-color: #007AFF;margin: 50px;"><text class="main-text-color">33333333</text></div>
+			</cell>
+			<header>
+				<div style="height: 150px;background: #000000;"></div>
+			</header>
+			<cell v-for="(num,index) in lists" :key="index">
+				<div style="height: 300px;border-width: 2px;border-style: solid;border-color: #333333;
+				background-color: #007AFF;margin: 50px;"><text>{{num}}</text></div>
+			</cell>
+			
+			<loading @loading="onLoading" :display="loadingShow">
+				<text style="display: flex;justify-content: center;width: 720px;">
+					Loading...
+				</text>
+			</loading>
+		</list>
+		<!-- <div style="height: 1000px;background-color: #09BB07;"><text>123456</text></div> -->
+		
+	</div>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				loadingShow:'hide',
+				show: 'hide',
+				refreshtext:"下拉可以刷新",
+				lists: ['A','B','C','D','E']
+			}
+		},
+		methods:{
+			// 上拉加载事件
+			onLoading(){
+				this.loadingShow = 'show';
+				setTimeout(()=>{
+					this.lists = [...this.lists,...['a','b','c']];
+					this.loadingShow = 'hide';
+				}, 2000);
+			},
+			// 执行刷新
+			refresh(e){
+				this.show = 'show';
+				this.refreshtext = '正在刷新...';
+				setTimeout(()=>{
+					this.show = 'hide';
+					this.refreshtext = '下拉可以刷新';
+				}, 1200);
+			},
+			// 判断下拉刷新状态
+			pullingdown(e){
+				if (e.pullingDistance > e.viewHeight) {
+					this.refreshtext = '释放就能刷新了';
+				} else {
+					this.refreshtext = '下拉可以刷新';
+				}
+			}
+		}
+	}
+</script>
+
+<style src="@/common/common.css"></style>
+<style>
+
+</style>

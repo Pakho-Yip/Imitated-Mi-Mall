@@ -1,5 +1,5 @@
 {
-    "name" : "fangshangcheng",
+    "name" : "Imitated-Mi-Mall",
     "appid" : "__UNI__9F98A44",
     "description" : "",
     "versionName" : "1.0.0",
@@ -8,7 +8,7 @@
     /* 5+App特有相关 */
     "app-plus" : {
         "usingComponents" : true,
-        "nvueStyleCompiler" : "uni-app",
+        // "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,
