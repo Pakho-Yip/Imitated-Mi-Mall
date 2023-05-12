@@ -1,29 +1,19 @@
 <template>
 	<div>
-		<list>
-			<refresh style="height: 80px;"
-			@refresh="refresh" @pullingdown="pullingdown" :display="show">
-				<text>{{refreshtext}}</text>
-			</refresh>
-			<cell>
-				<div style="height: 300px;border-width: 2px;border-style: solid;border-color: #333333;
-				background-color: #007AFF;margin: 50px;"><text class="main-text-color">33333333</text></div>
-			</cell>
-			<header>
-				<div style="height: 150px;background: #000000;"></div>
-			</header>
-			<cell v-for="(num,index) in lists" :key="index">
-				<div style="height: 300px;border-width: 2px;border-style: solid;border-color: #333333;
-				background-color: #007AFF;margin: 50px;"><text>{{num}}</text></div>
-			</cell>
-			
-			<loading @loading="onLoading" :display="loadingShow">
-				<text style="display: flex;justify-content: center;width: 720px;">
-					Loading...
-				</text>
-			</loading>
-		</list>
-		<!-- <div style="height: 1000px;background-color: #09BB07;"><text>123456</text></div> -->
+
+		<!-- 轮播图组件 -->
+		<slider :auto-play="true" :interval="3000" class="slider">
+			<div style="position: relative;">
+				<image class="image" resize="cover" src="../../static/images/demo/demo4.jpg"></image>
+			</div>
+			<div style="position: relative;">
+				<image class="image" resize="cover" src="../../static/images/demo/demo4.jpg"></image>
+			</div>
+			<div style="position: relative;">
+				<image class="image" resize="cover" src="../../static/images/demo/demo4.jpg"></image>
+			</div>
+			<indicator class="indicator"></indicator>
+		</slider>
 		
 	</div>
 </template>
@@ -32,43 +22,33 @@
 	export default {
 		data() {
 			return {
-				loadingShow:'hide',
-				show: 'hide',
-				refreshtext:"下拉可以刷新",
-				lists: ['A','B','C','D','E']
+
 			}
 		},
+		created() {
+
+		},
 		methods:{
-			// 上拉加载事件
-			onLoading(){
-				this.loadingShow = 'show';
-				setTimeout(()=>{
-					this.lists = [...this.lists,...['a','b','c']];
-					this.loadingShow = 'hide';
-				}, 2000);
-			},
-			// 执行刷新
-			refresh(e){
-				this.show = 'show';
-				this.refreshtext = '正在刷新...';
-				setTimeout(()=>{
-					this.show = 'hide';
-					this.refreshtext = '下拉可以刷新';
-				}, 1200);
-			},
-			// 判断下拉刷新状态
-			pullingdown(e){
-				if (e.pullingDistance > e.viewHeight) {
-					this.refreshtext = '释放就能刷新了';
-				} else {
-					this.refreshtext = '下拉可以刷新';
-				}
-			}
+
 		}
 	}
 </script>
 
-<style src="@/common/common.css"></style>
 <style>
-
+.slider,.image{
+	width: 750rpx;
+	height: 300rpx;
+	
+}
+.indicator{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 150rpx;
+	height: 80rpx;
+	background-color: rgba(0,0,0,0);
+	item-color: rgba(255,255,255,0.5);
+	item-selected-color:#fff;
+	
+}
 </style>

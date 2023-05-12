@@ -63,6 +63,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/ceshi/ceshi",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

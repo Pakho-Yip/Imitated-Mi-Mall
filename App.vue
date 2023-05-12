@@ -1,5 +1,12 @@
 <script>
 	export default {
+		// 全局变量
+		globalData:{
+			text: "",
+		},
+		// onUniNViewMessage(e){
+		// 	console.log(e)
+		// }, 已过期，推荐使用上面的uni.$on、uni.$emit
 		onLaunch: function() {
 			console.log('App Launch')
 		},
